@@ -1,16 +1,21 @@
 package br.com.backsolutions.argos.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Product {
     private String name;
     private int code;
     private double price;
     private int quantityInStock;
+    private List<Product> totalStock;
 
     public Product(String name, int code, double price, int quantityInStock) {
         this.name = name;
         this.code = code;
         this.price = price;
         this.quantityInStock = quantityInStock;
+        this.totalStock = new ArrayList<>();
     }
 
     public int getQuantityInStock() {
