@@ -7,19 +7,19 @@ public class Product {
     private String name;
     private int code;
     private double price;
-    private int quantityInStock;
-    private List<Product> totalStock;
+    private int quantity;
 
-    public Product(String name, int code, double price, int quantityInStock) {
+    protected static List<Product> totalStock = new ArrayList<>();
+
+    public Product(String name, int code, double price, int quantity) {
         this.name = name;
         this.code = code;
         this.price = price;
-        this.quantityInStock = quantityInStock;
-        this.totalStock = new ArrayList<>();
+        this.quantity = quantity;
     }
 
     public int getQuantityInStock() {
-        return quantityInStock;
+        return quantity;
     }
 
     public double getPrice() {
@@ -46,7 +46,7 @@ public class Product {
         this.price = price;
     }
 
-    public void setQuantityInStock(int quantityInStock) {
-        this.quantityInStock = quantityInStock;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
