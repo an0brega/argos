@@ -50,4 +50,10 @@ public class Electronic extends Product implements IStoredItem {
     public void setVoltage(int voltage) {
         this.voltage = voltage;
     }
+
+    @Override
+    public String toString(){
+        return  "Product: " + this.getName() + " | Code: " + this.getCode() + " | Price: R$" + this.getPrice() + " | Voltage: " + this.getVoltage() + "V";
+
+    }
 }
