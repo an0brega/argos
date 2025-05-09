@@ -11,6 +11,8 @@ public class Product {
 
     protected static List<Product> totalStock = new ArrayList<>();
 
+    public Product(){};
+
     public Product(String name, int code, double price, int quantity) {
         this.name = name;
         this.code = code;

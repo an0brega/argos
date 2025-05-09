@@ -1,10 +1,11 @@
 package br.com.backsolutions.argos;
 
+import br.com.backsolutions.argos.interfaces.IStoredItem;
+import br.com.backsolutions.argos.models.Clothing;
 import br.com.backsolutions.argos.models.Electronic;
 import br.com.backsolutions.argos.models.Food;
 import br.com.backsolutions.argos.models.Product;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.Locale;
 
@@ -12,60 +13,58 @@ import java.util.Locale;
 public class ArgosApp {
     public static void main(String[] args) {
 
-        //TODO - Implement the imput for the Clothing class
-        //TODO - Implement the loop so the system doesn't end until the user wants to
+        //TODO - Find a way to each item have a unique product code
+        //TODO - Implement the listAllInStock, updateInStock, checkByCode, removeFromStock, remaining methods
 
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
-        Product product;
-        int code = 0;
+        IStoredItem creator = null;
+        boolean runProgram = true;
 
-        System.out.println("Welcome to ARGOS");
+        while(runProgram) {
 
-        System.out.println("Please imput the product type:");
-        System.out.println("1 - Electronic");
-        System.out.println("2 - Food");
-        System.out.println("3 - Clothing");
-        System.out.print("Option: ");
-        int option = scanner.nextInt();
-        scanner.nextLine();
+            System.out.println("");
 
-        System.out.print("Name: ");
-        String name = scanner.nextLine();
+            System.out.println("Welcome to ARGOS");
 
-        try {
-            System.out.print("Product code: ");
-            code = scanner.nextInt();
+            System.out.println("Please imput the product type:");
+            System.out.println("1 - Electronic");
+            System.out.println("2 - Food");
+            System.out.println("3 - Clothing");
+            System.out.print("Option: ");
+            int option = scanner.nextInt();
             scanner.nextLine();
-        } catch (InputMismatchException e) {
-            System.out.println("Error: Invalid imput, it must be a number.");
-        }
 
-        System.out.print("Price: ");
-        double price = scanner.nextDouble();
-        scanner.nextLine();
+            switch (option) {
+                case 1:
+                    creator = new Electronic();
+                    break;
 
-        System.out.print("Quantity: ");
-        int quantity = scanner.nextInt();
+                case 2:
+                    creator = new Food();
+                    break;
 
-        switch (option) {
-            case 1:
-                System.out.print("Imput the product voltage (110/220): ");
-                int voltage = scanner.nextInt();
-                product = new Electronic(name, code, price, quantity, voltage);
-                System.out.println(product);
-                break;
+                case 3:
+                    creator = new Clothing();
+                    break;
 
-            case 2:
-                System.out.print("Imput cooking point (rare/medium): ");
-                scanner.nextLine();
-                String cookingPoint = scanner.nextLine();
-                product = new Food(name, cookingPoint, code, price, quantity);
-                System.out.println(product);
-                break;
+                case 4:
+                    System.out.println("Bye!");
+                    runProgram = false;
+                    break;
 
-            default:
-                System.out.println("Invalid choice, try again");
+                default:
+                    System.out.println("Invalid choice, try again");
+                    break;
+            }
+
+            if (creator != null) {
+                Product product = creator.addInStock(scanner);
+                System.out.println("Product created: " + product);
+            }
+            else {
+                System.out.println("Hmm, seems like the factory class wasn't created properly. How about running again?");
+            }
         }
     }
 }

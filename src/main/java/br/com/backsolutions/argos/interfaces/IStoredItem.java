@@ -1,8 +1,12 @@
 package br.com.backsolutions.argos.interfaces;
 
+import br.com.backsolutions.argos.models.Product;
+
+import java.util.Scanner;
+
 public interface IStoredItem {
 
-    void addInStock(String name, int productCode, double productPrice, int quantity);
+    Product addInStock(Scanner scanner);
     void listAllInStock();
     void updateInStock();
     void checkByCode();

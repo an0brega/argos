@@ -1,9 +1,17 @@
 package br.com.backsolutions.argos.models;
 
-public class Food extends Product{
-    private String cookingPoint;
+import br.com.backsolutions.argos.interfaces.IStoredItem;
 
-    public Food(String name,String cookingPoint, int code, double price, int quantityInStock) {
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Food extends Product implements IStoredItem {
+    private String cookingPoint;
+    private int validCode;
+
+    public Food(){}
+
+    public Food(String name, String cookingPoint, int code, double price, int quantityInStock) {
         super(name, code, price, quantityInStock);
         this.cookingPoint = cookingPoint;
     }
@@ -14,6 +22,55 @@ public class Food extends Product{
 
     public void setCookingPoint(String cookingPoint) {
         this.cookingPoint = cookingPoint;
+    }
+
+    @Override
+    public Product addInStock(Scanner scanner) {
+
+        System.out.print("Name: ");
+        String name = scanner.nextLine();
+
+        try {
+            System.out.print("Code: ");
+            validCode = scanner.nextInt();
+            scanner.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("Error: Invalid imput, it must be a number.");
+        }
+
+        System.out.print("Price: ");
+        double price = scanner.nextDouble();
+        scanner.nextLine();
+
+        System.out.print("Quantity in stock: ");
+        int quantity = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Cooking point (medium/done): ");
+        String cookingPoint = scanner.nextLine();
+        scanner.nextLine();
+
+        return new Food(name, cookingPoint, validCode, price, quantity);
+    }
+
+    @Override
+    public void listAllInStock() {
+
+    }
+
+    @Override
+    public void updateInStock() {
+
+    }
+
+    @Override
+    public void checkByCode() {
+
+    }
+
+    @Override
+    public void removeFromStock() {
+
     }
 
     @Override
