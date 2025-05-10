@@ -11,8 +11,6 @@ public class Product {
 
     protected static List<Product> totalStock = new ArrayList<>();
 
-    public Product(){};
-
     public Product(String name, int code, double price, int quantity) {
         this.name = name;
         this.code = code;
@@ -20,8 +18,8 @@ public class Product {
         this.quantity = quantity;
     }
 
-    public int getQuantityInStock() {
-        return quantity;
+    public List<Product> getQuantityInStock() {
+        return totalStock;
     }
 
     public double getPrice() {
