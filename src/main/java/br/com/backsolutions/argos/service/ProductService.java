@@ -1,4 +1,4 @@
-package br.com.backsolutions.argo.service;
+package br.com.backsolutions.argos.service;
 
 import br.com.backsolutions.argos.interfaces.IStoredItem;
 import br.com.backsolutions.argos.models.Clothing;
@@ -12,12 +12,13 @@ import java.util.Scanner;
 
 public class ProductService implements IStoredItem {
 
+    private List<Product> storage;
     private int validCode;
     private Product product;
 
-    public void addInStock(List<Product> storage, Scanner scanner) {
+    public void addInStock(List<Product> items, Scanner scanner) {
 
-        scanner.nextLine();
+        storage = items;
 
         System.out.println("Please imput the product type:");
         System.out.println("1 - Electronic");
@@ -36,7 +37,7 @@ public class ProductService implements IStoredItem {
             validCode = scanner.nextInt();
             scanner.nextLine();
         } catch (InputMismatchException e) {
-            System.out.println("Error: Invalid imput, it must be a number.");
+            System.out.println("Error: Invalid imput, it must be a number." + e);
         }
 
         System.out.print("Price: ");
@@ -54,6 +55,7 @@ public class ProductService implements IStoredItem {
                 scanner.nextLine();
 
                 product = new Electronic(name, validCode, price, quantity, voltage);
+
                 System.out.println(product);
                 break;
 
@@ -85,22 +87,29 @@ public class ProductService implements IStoredItem {
     }
 
     @Override
-    public void listAllInStock() {
-
-    }
-
-    @Override
     public void updateInStock() {
 
     }
 
     @Override
-    public void checkByCode() {
+    public void removeFromStock() {
 
     }
 
     @Override
-    public void removeFromStock() {
+    public void listAllInStock() {
+
+        if (storage == null || storage.isEmpty()) {
+            System.out.println("Sorry, the storage is empty or uninitialized");
+        } else {
+            for (Product item : storage) {
+                System.out.println(item);
+            }
+        }
+    }
+
+    @Override
+    public void checkByCode() {
 
     }
 }

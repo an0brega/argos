@@ -1,13 +1,12 @@
 package br.com.backsolutions.argos;
 
-import br.com.backsolutions.argo.service.ProductService;
+import br.com.backsolutions.argos.service.ProductService;
 import br.com.backsolutions.argos.models.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Locale;
-
 
 public class ArgosApp {
     public static void main(String[] args) {
@@ -17,7 +16,7 @@ public class ArgosApp {
 
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
-        List<Product> estoque = new ArrayList<>();
+        List<Product> storage = new ArrayList<>();
         ProductService service =  new ProductService();
         boolean shouldRunProgram = true;
 
@@ -29,18 +28,24 @@ public class ArgosApp {
 
             System.out.println("Please imput the product type:");
             System.out.println("1 - Add on stock");
-            System.out.println("2 - List all on stock");
-            System.out.println("3 - Update on stock");
-            System.out.println("4 - Check by code");
-            System.out.println("5 - Remove from stock");
+            System.out.println("2- Update on stock");
+            System.out.println("3 - Remove from stock");
+            System.out.println("4 - List all on stock");
+            System.out.println("5 - Check by code");
             System.out.println("6 - Exit");
             System.out.print("Option: ");
             int option = scanner.nextInt();
             scanner.nextLine();
 
+            System.out.println("");
+
             switch (option) {
                 case 1:
-                    service.addInStock(estoque, scanner);
+                    service.addInStock(storage, scanner);
+                    break;
+
+                case 4:
+                    service.listAllInStock();
                     break;
 
                 case 6:
