@@ -3,16 +3,14 @@ package br.com.backsolutions.argos;
 import br.com.backsolutions.argos.service.ProductService;
 import br.com.backsolutions.argos.models.Product;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Locale;
+import java.util.*;
 
 public class ArgosApp {
     public static void main(String[] args) {
 
-        //TODO - Find a way to each item have a unique product code
-        //TODO - Implement the listAllInStock, updateInStock, checkByCode, removeFromStock, remaining methods
+        //TODO - Find a way to each item have a unique product code.
+        //TODO - Implement the updateInStock, checkByCode, remaining methods.
+        //TODO - The removeFromStock method should remove by code, not by name.
 
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
@@ -28,20 +26,32 @@ public class ArgosApp {
 
             System.out.println("Please imput the product type:");
             System.out.println("1 - Add on stock");
-            System.out.println("2- Update on stock");
+            System.out.println("2 - Update on stock");
             System.out.println("3 - Remove from stock");
             System.out.println("4 - List all on stock");
             System.out.println("5 - Check by code");
             System.out.println("6 - Exit");
             System.out.print("Option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            int option;
+
+            try {
+                option = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Invalid option. Must be a number.");
+                scanner.nextLine();
+                continue;
+            }
 
             System.out.println("");
 
             switch (option) {
                 case 1:
                     service.addInStock(storage, scanner);
+                    break;
+
+                case 3:
+                    service.removeFromStock(scanner);
                     break;
 
                 case 4:
