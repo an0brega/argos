@@ -85,7 +85,6 @@ Crafted with care and learning in mind by an0brega.
 
 ## Maybe will be added someday:
 - A translated Portuguese version below (bilingual)
-- Your real name and GitHub profile added
 - Customization like badges, version numbers, or logos
 
 
