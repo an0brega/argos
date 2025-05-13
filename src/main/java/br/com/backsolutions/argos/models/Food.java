@@ -18,7 +18,7 @@ public class Food extends Product {
 
     @Override
     public String toString(){
-        return  "Product: " + this.getName() + " | Code: " + this.getCode() + " | Price: R$" + this.getPrice() + " | Cooking point: " + this.getCookingPoint();
+        return  "Product: " + this.getName() + " | Code: " + this.getCode() + " | Price: R$" + this.getPrice() + " | Cooking point: " + this.getCookingPoint() + " | Quantity: " + this.getQuantity();
 
     }
 }

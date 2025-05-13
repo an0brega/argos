@@ -11,6 +11,7 @@ public class ArgosApp {
         //TODO - Find a way to each item have a unique product code.
         //TODO - Implement the updateInStock, checkByCode, remaining methods.
         //TODO - The removeFromStock method should remove by code, not by name.
+        //TODO - Create the documentation
 
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
@@ -48,6 +49,10 @@ public class ArgosApp {
             switch (option) {
                 case 1:
                     service.addInStock(storage, scanner);
+                    break;
+
+                case 2:
+                    service.updateInStock(scanner);
                     break;
 
                 case 3:

@@ -18,6 +18,6 @@ public class Electronic extends Product {
 
     @Override
     public String toString(){
-        return  "Product: " + this.getName() + " | Code: " + this.getCode() + " | Price: R$" + this.getPrice() + " | Voltage: " + this.getVoltage() + "V";
+        return  "Product: " + this.getName() + " | Code: " + this.getCode() + " | Price: R$" + this.getPrice() + " | Voltage: " + this.getVoltage() + "V" + " | Quantity: " + this.getQuantity();
     }
 }

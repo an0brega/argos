@@ -9,7 +9,7 @@ import java.util.Scanner;
 public interface IStoredItem {
 
     void addInStock(List<Product> product, Scanner scanner);
-    void updateInStock();
+    void updateInStock(Scanner scanner);
     void removeFromStock(Scanner scanner);
     void listAllInStock();
     void checkByCode();

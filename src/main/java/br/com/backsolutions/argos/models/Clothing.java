@@ -18,6 +18,6 @@ public class Clothing extends Product {
 
     @Override
     public String toString(){
-        return  "Product: " + this.getName() + " | Code: " + this.getCode() + " | Price: R$" + this.getPrice() + " | Size: " + this.getSize();
+        return  "Product: " + this.getName() + " | Code: " + this.getCode() + " | Price: R$" + this.getPrice() + " | Size: " + this.getSize() + " | Quantity: " + this.getQuantity();
     }
 }
