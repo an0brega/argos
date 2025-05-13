@@ -89,4 +89,4 @@ Crafted with care and learning in mind by an0brega.
 - Customization like badges, version numbers, or logos
 
 
-**Happy coding with Argos!**💻🧠
+Happy coding with Argos! 💻🧠
