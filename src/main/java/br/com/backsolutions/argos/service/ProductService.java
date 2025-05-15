@@ -1,18 +1,31 @@
 package br.com.backsolutions.argos.service;
 
-import br.com.backsolutions.argos.interfaces.IStoredItem;
+import br.com.backsolutions.argos.interfaces.IStoredItemRepository;
 import br.com.backsolutions.argos.models.Clothing;
 import br.com.backsolutions.argos.models.Electronic;
 import br.com.backsolutions.argos.models.Food;
 import br.com.backsolutions.argos.models.Product;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class ProductService implements IStoredItem {
+public class ProductService implements IStoredItemRepository {
 
     private List<Product> storage;
+
+    public ProductService() {
+        storage = new ArrayList<>();  // initializing the list as empty
+    }
+
+    public void setStorage(List<Product> items) {
+        if (items == null) {
+            storage = new ArrayList<>();
+        } else {
+            storage = items;
+        }
+    }
 
     public Product readProductDataFromUser(Scanner scanner) {
         System.out.println("Please input the product type:");
@@ -20,7 +33,16 @@ public class ProductService implements IStoredItem {
         System.out.println("2 - Food");
         System.out.println("3 - Clothing");
 
-        int option = readInt(scanner, "Option: ");
+        int option;
+        String size;
+
+        do {
+            option = readInt(scanner, "Option: ");
+            if (option < 1 || option > 3) {
+                System.out.println("Invalid option. Please select 1, 2, or 3.");
+            }
+        } while (option < 1 || option > 3);
+
         String name = readLine(scanner, "Name: ");
         int code = readInt(scanner, "Code: ");
         double price = readDouble(scanner, "Price: ");
@@ -28,15 +50,35 @@ public class ProductService implements IStoredItem {
 
         switch (option) {
             case 1:
-                int voltage = readInt(scanner, "Voltage (110/220): ");
+                int voltage;
+            do {
+                voltage = readInt(scanner, "Voltage: ");
+                if (voltage != 110 && voltage != 220) {
+                    System.out.println("Invalid option. Please select 110 or 220.");
+                }
+            } while (voltage != 110 && voltage != 220);
+
                 return new Electronic(name, code, price, quantity, voltage);
 
             case 2:
-                String cookingPoint = readLine(scanner, "Cooking point (medium/done): ");
-                return new Food(name, cookingPoint, code, price, quantity);
+                String foodTaste;
+                do {
+                    foodTaste = readLine(scanner, "Cooking point (bitter/sweet): ");
+                    if (!foodTaste.equalsIgnoreCase("bitter") && !foodTaste.equalsIgnoreCase("sweet")) {
+                        System.out.println("Invalid option. Please select 'bitter' or 'sweet'.");
+                    }
+                } while (!foodTaste.equalsIgnoreCase("bitter") && !foodTaste.equalsIgnoreCase("sweet"));
+
+                return new Food(name, foodTaste, code, price, quantity);
 
             case 3:
-                String size = readLine(scanner, "Size (M/G): ");
+                do {
+                    size = readLine(scanner, "Size (M/G): ");
+                    if (!size.equalsIgnoreCase("M") && !size.equalsIgnoreCase("G")) {
+                        System.out.println("Invalid option. Please select M or G.");
+                    }
+                } while (!size.equalsIgnoreCase("M") && !size.equalsIgnoreCase("G"));
+
                 return new Clothing(name, size, code, price, quantity);
         }
 
@@ -46,7 +88,7 @@ public class ProductService implements IStoredItem {
     @Override
     public void addInStock(List<Product> items, Scanner scanner) {
 
-        storage = items;
+        setStorage(items);
 
         Product productToAdd = readProductDataFromUser(scanner);
 
@@ -55,17 +97,27 @@ public class ProductService implements IStoredItem {
         System.out.println("The following product was added to stock: " + productToAdd);
 
         System.out.println("This is your storage now: ");
-        listAllInStock(ContextType.ADDITION);
+        listAllInStock(ContextTypeEnum.ADDITION);
     }
 
     @Override
     public void updateInStock(Scanner scanner) {
-        System.out.print("Please, imput the name of the product you want to update: ");
+        System.out.print("Please, input the id of the product you want to update: ");
+
         String productToUpdate = scanner.nextLine();
+        scanner.nextLine();
+        int idToSearch;
+
+        if (isInteger(productToUpdate)) {
+            idToSearch = Integer.parseInt(productToUpdate);
+        } else {
+            System.out.println("Invalid input, it must be a number.");
+            return;
+        }
 
         int index;
 
-        int itemFoundOnStorage = couldFindProductIndexByName(productToUpdate);
+        int itemFoundOnStorage = couldFindProductIndexById(idToSearch);
 
         if (itemFoundOnStorage != -1) {
 
@@ -83,12 +135,12 @@ public class ProductService implements IStoredItem {
             }
 
             if (optionToUpdate.equalsIgnoreCase("I")) { // in Java, it doesn't work to compare strings using '=='. This method is more appropriated.
-                System.out.print("Please, imput the quantity you want to increase.");
+                System.out.print("Please, input the quantity you want to increase.");
                 int quantityToUpdate = scanner.nextInt();
 
                 scanner.nextLine();
 
-                index = couldFindProductIndexByName(productToUpdate);
+                index = couldFindProductIndexById(idToSearch);
 
                 if (index != -1) {
                     Product product = storage.get(index);
@@ -98,17 +150,12 @@ public class ProductService implements IStoredItem {
                     System.out.println("Updated!");
                     listAllInStock();
                 }
-            } else {
-                System.out.println("Invalid option. Please type 'I' to increase or 'D' to decrease.");
-                return;
-            }
-
-            if (optionToUpdate.equalsIgnoreCase("D")) {
-                System.out.print("Please, imput the quantity you want to decrease.");
+            } else if (optionToUpdate.equalsIgnoreCase("D")) {
+                System.out.print("Please, input the quantity you want to decrease.");
                 int quantityToDecrease = scanner.nextInt();
                 scanner.nextLine();
 
-                index = couldFindProductIndexByName(productToUpdate);
+                index = couldFindProductIndexById(idToSearch);
 
                 if (index != -1) {
                     Product product = storage.get(index);
@@ -130,26 +177,35 @@ public class ProductService implements IStoredItem {
     @Override
     public void removeFromStock(Scanner scanner) {
 
-        System.out.print("Please, input the name of the product you want to remove: ");
-        String productRemove = scanner.nextLine();
+        System.out.print("Please, input the id of the product you want to remove: ");
+        String productToRemove = scanner.nextLine();
+        int idToSearch;
 
-        int index = couldFindProductIndexByName(productRemove);
+        if (isInteger(productToRemove)) {
+            idToSearch = Integer.parseInt(productToRemove);
+        } else {
+            System.out.println("Invalid input, it must be a number.");
+            return;
+        }
+
+        int index = couldFindProductIndexById(idToSearch);
 
         if (index != -1) {
             storage.remove(index);
-            listAllInStock(ContextType.REMOVAL);
+            listAllInStock(ContextTypeEnum.REMOVAL);
 
         } else {
+            System.out.println("Item not found.");
             listAllInStock();
         }
     }
 
     @Override
     public void listAllInStock() {
-        listAllInStock(ContextType.CHECK);
+        listAllInStock(ContextTypeEnum.CHECK);
     }
 
-    public void listAllInStock(ContextType context) {
+    public void listAllInStock(ContextTypeEnum context) {
         if (storage == null || storage.isEmpty()) {
             switch (context) {
                 case REMOVAL:
@@ -172,11 +228,27 @@ public class ProductService implements IStoredItem {
     }
 
     @Override
-    public void checkByCode() {
+    public void checkByCode(Scanner scanner) {
+        System.out.print("Please, input the id of the product you want to check: ");
+        String productToCheck = scanner.nextLine();
 
+        if (!isInteger(productToCheck)) {
+            System.out.println("Invalid input, it must be a number.");
+            return;
+        }
+
+        int itemFound = Integer.parseInt(productToCheck);
+        int index = couldFindProductIndexById(itemFound);
+
+        if (index != -1) {
+            System.out.println("Found!");
+            System.out.println(storage.get(index));
+        } else {
+            System.out.println("Product not found.");
+        }
     }
 
-    private int couldFindProductIndexByName(String nameToFind) {
+    private int couldFindProductIndexById(int itemToFind) {
 
         if (storage == null) {
             return -1;
@@ -184,7 +256,7 @@ public class ProductService implements IStoredItem {
 
         for (int i = 0; i < storage.size(); i++) {
             Product item = storage.get(i);
-            if (item.getName().equalsIgnoreCase(nameToFind)) {
+            if (item.getCode() == itemToFind) {
                 return i;
             }
         }
@@ -199,6 +271,8 @@ public class ProductService implements IStoredItem {
                 scanner.nextLine();
                 return value;
             } catch (InputMismatchException e) {
+
+
                 System.out.println("Error: Input must be a number.");
                 scanner.nextLine(); //cleans the buffer
             }
@@ -224,4 +298,12 @@ public class ProductService implements IStoredItem {
         return scanner.nextLine();
     }
 
+    private boolean isInteger(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }

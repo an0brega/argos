@@ -1,24 +1,24 @@
 package br.com.backsolutions.argos.models;
 
 public class Food extends Product {
-    private String cookingPoint;
+    private String foodTaste;
 
-    public Food(String name, String cookingPoint, int code, double price, int quantityInStock) {
+    public Food(String name, String foodTaste, int code, double price, int quantityInStock) {
         super(name, code, price, quantityInStock);
-        this.cookingPoint = cookingPoint;
+        this.foodTaste = foodTaste;
     }
 
-    public String getCookingPoint() {
-        return cookingPoint;
+    public String getFoodTaste() {
+        return foodTaste;
     }
 
-    public void setCookingPoint(String cookingPoint) {
-        this.cookingPoint = cookingPoint;
+    public void setFoodTaste(String foodTaste) {
+        this.foodTaste = foodTaste;
     }
 
     @Override
     public String toString(){
-        return  "Product: " + this.getName() + " | Code: " + this.getCode() + " | Price: R$" + this.getPrice() + " | Cooking point: " + this.getCookingPoint() + " | Quantity: " + this.getQuantity();
+        return  "Product: " + this.getName() + " | Code: " + this.getCode() + " | Price: R$" + this.getPrice() + " | Cooking point: " + this.getFoodTaste() + " | Quantity: " + this.getQuantity();
 
     }
 }

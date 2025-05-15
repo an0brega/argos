@@ -9,8 +9,6 @@ public class ArgosApp {
     public static void main(String[] args) {
 
         //TODO - Find a way to each item have a unique product code.
-        //TODO - Implement the updateInStock, checkByCode, remaining methods.
-        //TODO - The removeFromStock method should remove by code, not by name.
         //TODO - Create the documentation
 
         Scanner scanner = new Scanner(System.in);
@@ -61,6 +59,10 @@ public class ArgosApp {
 
                 case 4:
                     service.listAllInStock();
+                    break;
+
+                case 5:
+                    service.checkByCode(scanner);
                     break;
 
                 case 6:

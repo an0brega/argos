@@ -1,13 +1,13 @@
 package br.com.backsolutions.argos.service;
 
-public enum ContextType {
+public enum ContextTypeEnum {
     REMOVAL(1),
     ADDITION(2),
     CHECK(3);
 
     private final int code; //'final' means that the value of this variable cannot be changed after initialized
 
-    ContextType(int code) {
+    ContextTypeEnum(int code) {
         this.code = code;
     }
 
