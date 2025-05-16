@@ -1,5 +1,8 @@
-package br.com.backsolutions.argos.service;
+package br.com.backsolutions.argos.enums;
 
+/**
+ * Contains the three different enum values for the situations where the storage content should be printed.
+ */
 public enum ContextTypeEnum {
     REMOVAL(1),
     ADDITION(2),

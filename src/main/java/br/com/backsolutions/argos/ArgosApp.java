@@ -5,32 +5,56 @@ import br.com.backsolutions.argos.models.Product;
 
 import java.util.*;
 
+/**
+ * Main application class for the Argos stock management system.
+ * <p>
+ * This class is responsible for starting the application and providing a
+ * menu-driven interface to interact with the product inventory.
+ * </p>
+ *
+ * <p>
+ * Functionalities available:
+ * <ul>
+ *     <li>Add products to the stock</li>
+ *     <li>Update existing product quantities</li>
+ *     <li>Remove products from stock</li>
+ *     <li>List all products in stock</li>
+ *     <li>Search for a product by its code</li>
+ * </ul>
+ * </p>
+ *
+ * @author an0br3ga
+ */
 public class ArgosApp {
+
+    /**
+     * Entry point of the application.
+     *
+     * @param args Command-line arguments (not used in this application)
+     */
     public static void main(String[] args) {
 
-        //TODO - Find a way to each item have a unique product code.
-        //TODO - Create the documentation
+        // TODO - Find a way for each item to have a unique product code.
 
         Scanner scanner = new Scanner(System.in);
         scanner.useLocale(Locale.US);
         List<Product> storage = new ArrayList<>();
-        ProductService service =  new ProductService();
+        ProductService service = new ProductService();
         boolean shouldRunProgram = true;
 
-        while(shouldRunProgram) {
+        while (shouldRunProgram) {
 
-            System.out.println("");
-
+            System.out.println();
             System.out.println("Welcome to ARGOS");
-
-            System.out.println("Please imput the product type:");
-            System.out.println("1 - Add on stock");
-            System.out.println("2 - Update on stock");
+            System.out.println("Please input the product type:");
+            System.out.println("1 - Add to stock");
+            System.out.println("2 - Update stock");
             System.out.println("3 - Remove from stock");
-            System.out.println("4 - List all on stock");
-            System.out.println("5 - Check by code");
+            System.out.println("4 - List all products in stock");
+            System.out.println("5 - Check product by code");
             System.out.println("6 - Exit");
             System.out.print("Option: ");
+
             int option;
 
             try {
@@ -42,7 +66,7 @@ public class ArgosApp {
                 continue;
             }
 
-            System.out.println("");
+            System.out.println();
 
             switch (option) {
                 case 1:
@@ -71,7 +95,7 @@ public class ArgosApp {
                     break;
 
                 default:
-                    System.out.println("Invalid choice, try again");
+                    System.out.println("Invalid choice, try again.");
                     break;
             }
         }

@@ -5,18 +5,22 @@ import br.com.backsolutions.argos.models.Clothing;
 import br.com.backsolutions.argos.models.Electronic;
 import br.com.backsolutions.argos.models.Food;
 import br.com.backsolutions.argos.models.Product;
+import br.com.backsolutions.argos.enums.ContextTypeEnum;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Responsible for handle all the behaviors related to the storage.
+ */
 public class ProductService implements IStoredItemRepository {
 
     private List<Product> storage;
 
     public ProductService() {
-        storage = new ArrayList<>();  // initializing the list as empty
+        storage = new ArrayList<>();  // Starts with an empty storage list
     }
 
     public void setStorage(List<Product> items) {
@@ -27,6 +31,12 @@ public class ProductService implements IStoredItemRepository {
         }
     }
 
+    /**
+     * Reads the product info and defines which type of {@link br.com.backsolutions.argos.models.Product} it is.
+     *
+     * @param scanner
+     * @return An instance of {@link br.com.backsolutions.argos.models.Product}
+     */
     public Product readProductDataFromUser(Scanner scanner) {
         System.out.println("Please input the product type:");
         System.out.println("1 - Electronic");
@@ -51,12 +61,12 @@ public class ProductService implements IStoredItemRepository {
         switch (option) {
             case 1:
                 int voltage;
-            do {
-                voltage = readInt(scanner, "Voltage: ");
-                if (voltage != 110 && voltage != 220) {
-                    System.out.println("Invalid option. Please select 110 or 220.");
-                }
-            } while (voltage != 110 && voltage != 220);
+                do {
+                    voltage = readInt(scanner, "Voltage: ");
+                    if (voltage != 110 && voltage != 220) {
+                        System.out.println("Invalid option. Please select 110 or 220.");
+                    }
+                } while (voltage != 110 && voltage != 220);
 
                 return new Electronic(name, code, price, quantity, voltage);
 
@@ -85,6 +95,9 @@ public class ProductService implements IStoredItemRepository {
         throw new IllegalStateException("Unexpected product type selected: " + option);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addInStock(List<Product> items, Scanner scanner) {
 
@@ -100,6 +113,9 @@ public class ProductService implements IStoredItemRepository {
         listAllInStock(ContextTypeEnum.ADDITION);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateInStock(Scanner scanner) {
         System.out.print("Please, input the id of the product you want to update: ");
@@ -174,6 +190,9 @@ public class ProductService implements IStoredItemRepository {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeFromStock(Scanner scanner) {
 
@@ -200,6 +219,9 @@ public class ProductService implements IStoredItemRepository {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void listAllInStock() {
         listAllInStock(ContextTypeEnum.CHECK);
@@ -227,6 +249,9 @@ public class ProductService implements IStoredItemRepository {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void checkByCode(Scanner scanner) {
         System.out.print("Please, input the id of the product you want to check: ");
@@ -248,6 +273,12 @@ public class ProductService implements IStoredItemRepository {
         }
     }
 
+    /**
+     * Helper method to search for a product inside the storage using the id.
+     *
+     * @param itemToFind The respective id which will be used to search for the product.
+     * @return The index of the product in the storage list, or -1 if not found.
+     */
     private int couldFindProductIndexById(int itemToFind) {
 
         if (storage == null) {
@@ -263,6 +294,14 @@ public class ProductService implements IStoredItemRepository {
         return -1;
     }
 
+    /**
+     * Helper method to make easier to read and handling the inputs for the {@link br.com.backsolutions.argos.models.Product} code and
+     * quantity passed by terminal.
+     *
+     * @param scanner Scanner object used to read user input.
+     * @param message Message to show what needs to be inputted
+     * @return An integer representing the code or quantity of the product.
+     */
     private int readInt(Scanner scanner, String message) {
         while (true) { //the code will remain asking for a valid option until the user inputs a correct one
             try {
@@ -279,6 +318,13 @@ public class ProductService implements IStoredItemRepository {
         }
     }
 
+    /**
+     * Helper method to make easier to read and handle the inputs for the {@link br.com.backsolutions.argos.models.Product} price
+     * passed by terminal.
+     * @param scanner Scanner object used to read user input.
+     * @param message Message to show what needs to be inputted
+     * @return A double representing the price of the product.
+     */
     private double readDouble(Scanner scanner, String message) {
         while (true) {
             try {
@@ -293,11 +339,23 @@ public class ProductService implements IStoredItemRepository {
         }
     }
 
+    /**
+     * Helper method to make easier to read and handle the inputs for the {@link br.com.backsolutions.argos.models.Product} name
+     * passed by terminal.
+     * @param scanner Scanner object used to read user input.
+     * @param message Message to show what needs to be inputted
+     * @return A String representing the name of the product.
+     */
     private String readLine(Scanner scanner, String message) {
         System.out.print(message);
         return scanner.nextLine();
     }
 
+    /**
+     * Helper method to handle the integers passed in.
+     * @param input
+     * @return A boolean value to ensure if the input is or isn't an integer.
+     */
     private boolean isInteger(String input) {
         try {
             Integer.parseInt(input);
